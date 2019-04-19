@@ -1,3 +1,6 @@
+# test_videos folder
+test_videos/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
