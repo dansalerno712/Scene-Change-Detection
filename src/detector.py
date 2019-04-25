@@ -233,6 +233,10 @@ class SceneDetector:
             frame_count += 1
             ret, frame = cap.read()
 
+            # break if no frame was grabbed
+            if not ret:
+                break
+
             # convert frame to grayscale
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
