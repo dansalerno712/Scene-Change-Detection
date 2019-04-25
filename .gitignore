@@ -1,5 +1,6 @@
 # test_videos folder
 test_videos/
+output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

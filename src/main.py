@@ -12,10 +12,10 @@ def main():
     path = sys.argv[1]
 
     # create a detector
-    detector = SceneDetector(path)
+    detector = SceneDetector(path, "./output")
 
     # run the detector
-    detector.detect(method="SSD", a=1, b=3, c=3, s=0.005, display=True)
+    detector.detect(method="SSD", a=1, b=3, c=3, s=0.005, display=True, output=False)
 
 
 if __name__ == '__main__':

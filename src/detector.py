@@ -1,6 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy
+from datetime import datetime
 
 
 class SceneDetector:
@@ -10,12 +11,14 @@ class SceneDetector:
     https://www.researchgate.net/profile/Anastasios_Dimou/publication/249863763_SCENE_CHANGE_DETECTION_FOR_H264_USING_DYNAMIC_THRESHOLD_TECHNIQUES/links/00b4952d3b4ae69753000000/SCENE-CHANGE-DETECTION-FOR-H264-USING-DYNAMIC-THRESHOLD-TECHNIQUES.pdf
 
     Attributes:
-        path (string): The path to a video file
+        input_path (string): The path to a video file
+        output_dir (string): The directory to save output files
     """
 
-    def __init__(self, path):
+    def __init__(self, input_path, output_dir):
         super(SceneDetector, self).__init__()
-        self.path = path
+        self.input_path = input_path
+        self.output_dir = output_dir
 
     def __calculate_mean(self, window):
         """Calculate the mean of the sldiding window of frame
@@ -157,7 +160,23 @@ class SceneDetector:
         }
         return methods[key]
 
-    def detect(self, window_size=20, method="SAD", a=-1, b=2, c=2, s=0.02, k=20, display=False):
+    def __output(self, output_data):
+        """Outputs detectiond data to a text file
+
+        Args:
+            output_data (Array): An array of tuples in the form of
+            (frame before change, frame of change)
+        """
+        file_name = self.output_dir + "/detection-" + \
+            datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".txt"
+
+        with open(file_name, "w") as f:
+            f.write("Scene changes:\n")
+            for pair in output_data:
+                f.write("Scene change detected between frames " +
+                        str(pair[0]) + " and " + str(pair[1]) + "\n")
+
+    def detect(self, window_size=20, method="SAD", a=-1, b=2, c=2, s=0.02, k=20, display=False, output=False):
         """Detects scene changes in a video
 
         Args:
@@ -178,6 +197,9 @@ class SceneDetector:
             b) The preceding frame and the frame that a change
             was detected on
             c) A graph plotting frame similarity and threshold data
+            output (bool, optional): whether or not to output data.
+            This will output a text file saying between which frames
+            a scene change was found
         """
         # create frame buffer
         window = numpy.full(window_size, numpy.nan)
@@ -186,6 +208,9 @@ class SceneDetector:
         if display:
             thresh_vals = []
             frame_vals = []
+
+        if output:
+            output_data = []
 
         # we need to keep the previous_frame
         previous_frame = None
@@ -200,7 +225,7 @@ class SceneDetector:
         frame_count = 0
 
         # grab video
-        cap = cv2.VideoCapture(self.path)
+        cap = cv2.VideoCapture(self.input_path)
 
         # playback
         while cap.isOpened():
@@ -252,6 +277,9 @@ class SceneDetector:
                         cv2.waitKey(0)
                         cv2.destroyAllWindows()
 
+                    if output:
+                        output_data.append((frame_count - 1, frame_count))
+
                     # set values for the decay function
                     change_detected = True
                     decay_counter = k
@@ -276,3 +304,6 @@ class SceneDetector:
             plt.plot(thresh_vals)
             plt.plot(frame_vals)
             plt.show()
+
+        if output:
+            self.__output(output_data)
