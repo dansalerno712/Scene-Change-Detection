@@ -12,6 +12,7 @@ def main():
     path = sys.argv[1]
     output_dir = sys.argv[2]
 
+    # make sure directory exists
     if (not os.path.isdir(output_dir)):
         print("Error: output directory is not a directory")
         return
