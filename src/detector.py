@@ -309,5 +309,6 @@ class SceneDetector:
             plt.plot(frame_vals)
             plt.show()
 
+        # output if necessary
         if output:
             self.__output(output_data)
