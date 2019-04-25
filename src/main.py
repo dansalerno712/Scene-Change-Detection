@@ -8,6 +8,7 @@ def main():
         print("Usage: python main.py <path_to_video_file>")
         sys.exit(1)
 
+    # TODO: check this is a video file?
     path = sys.argv[1]
 
     # create a detector
