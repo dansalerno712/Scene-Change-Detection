@@ -1,5 +1,5 @@
 import sys
-import cv2
+from detector import SceneDetector
 
 
 def main():
@@ -10,23 +10,11 @@ def main():
 
     path = sys.argv[1]
 
-    # grab video
-    cap = cv2.VideoCapture(path)
+    # create a detector
+    detector = SceneDetector(path)
 
-    # playback
-    while cap.isOpened():
-        ret, frame = cap.read()
-
-        cv2.imshow("frame", frame)
-
-        # how to check for keyboard input with opencv
-        # if they press q stop the loop
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
-
-    # cleanup
-    cap.release()
-    cv2.destroyAllWindows()
+    # run the detector
+    detector.detect(method="SSD", a=1, b=3, c=3, s=0.005, display=True)
 
 
 if __name__ == '__main__':
