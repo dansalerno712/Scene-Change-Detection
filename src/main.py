@@ -1,5 +1,5 @@
 import sys
-from detector import SceneDetector
+from scenedetector import SceneDetector
 import os
 
 

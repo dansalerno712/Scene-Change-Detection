@@ -1,0 +1,1 @@
+from scenedetector.detector import SceneDetector
