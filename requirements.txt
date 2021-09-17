@@ -101,7 +101,7 @@ patsy==0.4.1
 pefile==2017.11.5
 pep8==1.7.0
 pickleshare==0.7.4
-Pillow==4.1.1
+Pillow==8.3.2
 ply==3.10
 prompt-toolkit==1.0.14
 psutil==5.2.2
